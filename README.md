@@ -1,94 +1,6 @@
 # ERC20 Token Indexer
 
-[中文](#中文) | [English](#english)
-
----
-
-## 中文
-
-这是一个基于 Node.js 和 TypeScript 开发的高性能 ERC20 代币交易索引器。它能够实时监听区块链上的 `Transfer` 事件，将其持久化到 PostgreSQL 数据库中，并通过 RESTful API 提供查询服务。
-
-### 主要功能
-
-- **实时监听**: 利用 WebSocket 实时订阅 ERC20 代币的 `Transfer` 事件。
-- **历史同步**: 自动从配置的起始区块同步历史交易数据。
-- **断点续传**: 通过数据库记录已同步的区块高度，支持程序重启后继续同步。
-- **数据查询**: 提供基于 Express 的 API 接口，支持按地址分页查询交易记录。
-- **高性能**: 使用 `viem` 库进行高效的区块链交互，并对数据库索引进行了优化。
-
-### 技术栈
-
-- **语言**: TypeScript
-- **区块链交互**: [viem](https://viem.sh/)
-- **数据库**: PostgreSQL
-- **Web 框架**: Express
-- **运行环境**: Node.js
-
-### 快速开始
-
-#### 1. 配置环境
-
-复制 `.env.example` (如果不存在请创建) 并填写以下变量：
-
-```env
-DATABASE_URL=postgres://user:password@localhost:5432/dbname
-RPC_WSS_URL=wss://your-provider-url
-CONTRACT_ADDRESS=0x...
-PORT=3000
-```
-
-#### 2. 初始化数据库
-
-使用 [init.sql](init.sql) 文件中的 SQL 语句创建必要的表和索引。
-
-#### 3. 安装依赖
-
-```bash
-pnpm install
-```
-
-#### 4. 运行索引器
-
-```bash
-npm start
-```
-
-#### 5. 启动 API 服务
-
-```bash
-npm run serve
-```
-
-### API 接口
-
-- **健康检查**: `GET /health`
-- **获取交易历史**: `GET /api/transfers/:address?page=1&limit=20`
-- **同步状态**: `GET /api/sync-status`
-
-### 使用 PM2 后台运行
-
-推荐使用 [PM2](https://pm2.keymetrics.io/) 来管理生产环境的进程：
-
-```bash
-# 安装 PM2
-npm install -g pm2
-
-# 启动索引器
-pm2 start "npx tsx index.ts" --name erc20-indexer
-
-# 启动 API 服务
-pm2 start "npx tsx server.ts" --name erc20-api
-
-# 查看状态
-pm2 list
-
-# 查看日志
-pm2 logs erc20-indexer
-```
-
-### 开源协议
-
-ISC
+[English](#english) | [中文](#中文)
 
 ---
 
@@ -175,5 +87,93 @@ pm2 logs erc20-indexer
 ```
 
 ### License
+
+ISC
+
+---
+
+## 中文
+
+这是一个基于 Node.js 和 TypeScript 开发的高性能 ERC20 代币交易索引器。它能够实时监听区块链上的 `Transfer` 事件，将其持久化到 PostgreSQL 数据库中，并通过 RESTful API 提供查询服务。
+
+### 主要功能
+
+- **实时监听**: 利用 WebSocket 实时订阅 ERC20 代币的 `Transfer` 事件。
+- **历史同步**: 自动从配置的起始区块同步历史交易数据。
+- **断点续传**: 通过数据库记录已同步的区块高度，支持程序重启后继续同步。
+- **数据查询**: 提供基于 Express 的 API 接口，支持按地址分页查询交易记录。
+- **高性能**: 使用 `viem` 库进行高效的区块链交互，并对数据库索引进行了优化。
+
+### 技术栈
+
+- **语言**: TypeScript
+- **区块链交互**: [viem](https://viem.sh/)
+- **数据库**: PostgreSQL
+- **Web 框架**: Express
+- **运行环境**: Node.js
+
+### 快速开始
+
+#### 1. 配置环境
+
+复制 `.env.example` (如果不存在请创建) 并填写以下变量：
+
+```env
+DATABASE_URL=postgres://user:password@localhost:5432/dbname
+RPC_WSS_URL=wss://your-provider-url
+CONTRACT_ADDRESS=0x...
+PORT=3000
+```
+
+#### 2. 初始化数据库
+
+使用 [init.sql](init.sql) 文件中的 SQL 语句创建必要的表和索引。
+
+#### 3. 安装依赖
+
+```bash
+pnpm install
+```
+
+#### 4. 运行索引器
+
+```bash
+npm start
+```
+
+#### 5. 启动 API 服务
+
+```bash
+npm run serve
+```
+
+### API 接口
+
+- **健康检查**: `GET /health`
+- **获取交易历史**: `GET /api/transfers/:address?page=1&limit=20`
+- **同步状态**: `GET /api/sync-status`
+
+### 使用 PM2 后台运行
+
+推荐使用 [PM2](https://pm2.keymetrics.io/) 来管理生产环境的进程：
+
+```bash
+# 安装 PM2
+npm install -g pm2
+
+# 启动索引器
+pm2 start "npx tsx index.ts" --name erc20-indexer
+
+# 启动 API 服务
+pm2 start "npx tsx server.ts" --name erc20-api
+
+# 查看状态
+pm2 list
+
+# 查看日志
+pm2 logs erc20-indexer
+```
+
+### 开源协议
 
 ISC
